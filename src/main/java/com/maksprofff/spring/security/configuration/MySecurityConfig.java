@@ -75,7 +75,7 @@ public UserDetailsService users() {
     return new InMemoryUserDetailsManager(user, hr, manager);
 }
 
-/*
+
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests().antMatchers("/").hasAnyRole("EMPLOYEE","MANAGER", "HR")
@@ -84,5 +84,5 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 .and().formLogin().permitAll();
     return http.build();
     }
-*/
+
 }
