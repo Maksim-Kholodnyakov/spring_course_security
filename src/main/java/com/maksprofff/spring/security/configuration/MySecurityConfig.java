@@ -1,5 +1,6 @@
 package com.maksprofff.spring.security.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
@@ -12,12 +13,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @EnableWebSecurity
 @Configuration
 public class MySecurityConfig {
-
+@Autowired
+private DataSource dataSource;
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //        http.formLogin(form -> {
@@ -54,25 +59,27 @@ public class MySecurityConfig {
 //        return new BCryptPasswordEncoder();
 //    }
 @Bean
-public UserDetailsService users() {
+public UserDetailsService users(DataSource dataSource) {
+    JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
     // The builder will ensure the passwords are encoded before saving in memory
-    User.UserBuilder users = User.withDefaultPasswordEncoder();
-    UserDetails user = users
-            .username("user")
-            .password("user")
-            .roles("EMPLOYEE")
-            .build();
-    UserDetails hr = users
-            .username("hr")
-            .password("hr")
-            .roles("HR")
-            .build();
-    UserDetails manager = users
-            .username("manager")
-            .password("manager")
-            .roles("MANAGER", "HR")
-            .build();
-    return new InMemoryUserDetailsManager(user, hr, manager);
+//    User.UserBuilder users = User.withDefaultPasswordEncoder();
+//    UserDetails user = users
+//            .username("user")
+//            .password("user")
+//            .roles("EMPLOYEE")
+//            .build();
+//    UserDetails hr = users
+//            .username("hr")
+//            .password("hr")
+//            .roles("HR")
+//            .build();
+//    UserDetails manager = users
+//            .username("manager")
+//            .password("manager")
+//            .roles("MANAGER", "HR")
+//            .build();
+//    return new InMemoryUserDetailsManager(user, hr, manager);
+    return jdbcUserDetailsManager;
 }
 
 
